@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        #map {
+            width: 1028px;
+            height: 866px;
+        }
+        </style>
+        <title>Mapa de Referenciales Demo</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Roles_1.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-37.89220469612929,-72.41216977784863],[-37.662810146128784,-72.13976374972303]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleHybrid_0');
+        map.getPane('pane_GoogleHybrid_0').style.zIndex = 400;
+        var layer_GoogleHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleHybrid_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleHybrid_0;
+        map.addLayer(layer_GoogleHybrid_0);
+        function pop_Roles_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Región</th>\
+                        <td>' + (feature.properties['region'] !== null ? autolinker.link(feature.properties['region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Comuna</th>\
+                        <td>' + (feature.properties['comuna'] !== null ? autolinker.link(feature.properties['comuna'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Manzana</th>\
+                        <td>' + (feature.properties['manzana'] !== null ? autolinker.link(feature.properties['manzana'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Predio</th>\
+                        <td>' + (feature.properties['predio'] !== null ? autolinker.link(feature.properties['predio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rol</th>\
+                        <td>' + (feature.properties['rol'] !== null ? autolinker.link(feature.properties['rol'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Matriz</th>\
+                        <td>' + (feature.properties['matriz'] !== null ? autolinker.link(feature.properties['matriz'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Latitud</th>\
+                        <td>' + (feature.properties['lat'] !== null ? autolinker.link(feature.properties['lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Longitud</th>\
+                        <td>' + (feature.properties['long'] !== null ? autolinker.link(feature.properties['long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nombre</th>\
+                        <td>' + (feature.properties['nombre'] !== null ? autolinker.link(feature.properties['nombre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fojas</th>\
+                        <td>' + (feature.properties['fojas'] !== null ? autolinker.link(feature.properties['fojas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Número</th>\
+                        <td>' + (feature.properties['numero'] !== null ? autolinker.link(feature.properties['numero'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Año</th>\
+                        <td>' + (feature.properties['año'] !== null ? autolinker.link(feature.properties['año'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Superficie m2</th>\
+                        <td>' + (feature.properties['superficie'] !== null ? autolinker.link(feature.properties['superficie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Comprador</th>\
+                        <td>' + (feature.properties['comprador'] !== null ? autolinker.link(feature.properties['comprador'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Vendedor</th>\
+                        <td>' + (feature.properties['vendedor'] !== null ? autolinker.link(feature.properties['vendedor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Transacción</th>\
+                        <td>' + (feature.properties['transaccio'] !== null ? autolinker.link(feature.properties['transaccio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">transacc_1</th>\
+                        <td>' + (feature.properties['transacc_1'] !== null ? autolinker.link(feature.properties['transacc_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fecha Escritura</th>\
+                        <td>' + (feature.properties['fecha_escr'] !== null ? autolinker.link(feature.properties['fecha_escr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">año_escri</th>\
+                        <td>' + (feature.properties['año_escri'] !== null ? autolinker.link(feature.properties['año_escri'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">fojas_ante</th>\
+                        <td>' + (feature.properties['fojas_ante'] !== null ? autolinker.link(feature.properties['fojas_ante'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">observacio</th>\
+                        <td>' + (feature.properties['observacio'] !== null ? autolinker.link(feature.properties['observacio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Roles_1_0(feature) {
+            switch(String(feature.properties['rol'])) {
+                case '601-215':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,103,227,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-256':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,20,179,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-287':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,30,155,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-288':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(26,156,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-289':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,234,106,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-71':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,230,100,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-88':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(52,146,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '601-92':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,232,104,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '607-350':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,240,164,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '607-370':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(70,210,84,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-184':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(49,234,135,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-187':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(54,189,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-189':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(211,25,192,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-195':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,239,25,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-199':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,120,143,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-200':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,14,232,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-202':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(25,184,232,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-203':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,46,29,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-206':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(178,105,205,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-207':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(113,155,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-209':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,37,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-210':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,224,132,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-211':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(23,226,192,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-212':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(154,107,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-217':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(127,228,123,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-220':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,15,21,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-221':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(140,222,45,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-224':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(73,92,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-237':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,165,125,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-240':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(98,209,178,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-241':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,210,151,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-243':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,125,183,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-251':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,114,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-254':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,102,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-256':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(218,105,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-260':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,99,155,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-262':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,208,106,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-282':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(51,93,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-283':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,192,112,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-287':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,157,99,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-288':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,98,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-300':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(199,232,138,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-317':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,28,55,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-321':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(85,239,58,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-327':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,51,222,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-336':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(206,151,69,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '627-89':
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(151,211,111,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Roles_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,223,219,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Roles_1');
+        map.getPane('pane_Roles_1').style.zIndex = 401;
+        map.getPane('pane_Roles_1').style['mix-blend-mode'] = 'normal';
+        var layer_Roles_1 = new L.geoJson(json_Roles_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Roles_1',
+            layerName: 'layer_Roles_1',
+            pane: 'pane_Roles_1',
+            onEachFeature: pop_Roles_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Roles_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Roles_1);
+        map.addLayer(layer_Roles_1);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Mapa de Referenciales Demo</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'topright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Este es un mapa web diseñado por Gabriel Pantoja para visualizar inscripciones de compraventas de propiedades en Chile. Su uso es de carácter personal y confidencial para uso exclusivo de peritajes con fines de tasación.';
+            };
+            abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Roles<br /><table><tr><td style="text-align: center;"><img src="legend/Roles_1_6012150.png" /></td><td>601-215</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6012561.png" /></td><td>601-256</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6012872.png" /></td><td>601-287</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6012883.png" /></td><td>601-288</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6012894.png" /></td><td>601-289</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_601715.png" /></td><td>601-71</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_601886.png" /></td><td>601-88</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_601927.png" /></td><td>601-92</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6073508.png" /></td><td>607-350</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6073709.png" /></td><td>607-370</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62718410.png" /></td><td>627-184</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62718711.png" /></td><td>627-187</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62718912.png" /></td><td>627-189</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62719513.png" /></td><td>627-195</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62719914.png" /></td><td>627-199</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62720015.png" /></td><td>627-200</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62720216.png" /></td><td>627-202</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62720317.png" /></td><td>627-203</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62720618.png" /></td><td>627-206</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62720719.png" /></td><td>627-207</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62720920.png" /></td><td>627-209</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62721021.png" /></td><td>627-210</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62721122.png" /></td><td>627-211</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62721223.png" /></td><td>627-212</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62721724.png" /></td><td>627-217</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62722025.png" /></td><td>627-220</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62722126.png" /></td><td>627-221</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62722427.png" /></td><td>627-224</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62723728.png" /></td><td>627-237</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62724029.png" /></td><td>627-240</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62724130.png" /></td><td>627-241</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62724331.png" /></td><td>627-243</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62725132.png" /></td><td>627-251</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62725433.png" /></td><td>627-254</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62725634.png" /></td><td>627-256</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62726035.png" /></td><td>627-260</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62726236.png" /></td><td>627-262</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62728237.png" /></td><td>627-282</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62728338.png" /></td><td>627-283</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62728739.png" /></td><td>627-287</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62728840.png" /></td><td>627-288</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62730041.png" /></td><td>627-300</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62731742.png" /></td><td>627-317</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62732143.png" /></td><td>627-321</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62732744.png" /></td><td>627-327</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_62733645.png" /></td><td>627-336</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_6278946.png" /></td><td>627-89</td></tr><tr><td style="text-align: center;"><img src="legend/Roles_1_47.png" /></td><td></td></tr></table>': layer_Roles_1,"Google Hybrid": layer_GoogleHybrid_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Roles_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['rol'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['rol']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Roles_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_Roles_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'id'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_Roles_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Roles_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Roles_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Roles_1]);
+        });
+        </script>
+    </body>
+</html>
